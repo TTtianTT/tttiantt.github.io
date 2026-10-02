@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#244be6">
+  <title>LoRA-Norm · Learn the Directions, Normalize the Gains</title>
+  <meta name="description" content="LoRA-Norm: data-free post-training normalization for low-rank adapters. Animated method, results, and paper. arXiv:2610.02067.">
+  <meta property="og:title" content="LoRA-Norm · Learn the Directions, Normalize the Gains">
+  <meta property="og:description" content="Post-Training Normalization for LoRA. arXiv:2610.02067.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="citation_title" content="Learn the Directions, Normalize the Gains: Post-Training Normalization for LoRA">
+  <meta name="citation_author" content="Zailong Tian">
+  <meta name="citation_author" content="Yanzhe Chen">
+  <meta name="citation_author" content="Zhuoheng Han">
+  <meta name="citation_author" content="Houfeng Wang">
+  <meta name="citation_author" content="Lizi Liao">
+  <meta name="citation_publication_date" content="2026/10/01">
+  <meta name="citation_arxiv_id" content="2610.02067">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2610.02067">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23244be6'/%3E%3Cpath d='M7 24V8m6 16V13m6 11V16m6 8V18' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:url" content="https://tttiantt.github.io/lora-norm/">
+  <link rel="canonical" href="https://tttiantt.github.io/lora-norm/">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="header wrap">
+    <a class="wordmark" href="#">LoRA-Norm</a>
+    <nav aria-label="Navigation"><a href="#results">Results</a><a href="#analysis">Analysis</a><a href="#citation">Cite</a></nav>
+    <button id="motion-toggle" class="motion" aria-pressed="false"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span id="motion-label">Pause animation</span></button>
+  </header>
+  <main id="main">
+    <section class="intro wrap">
+      <a class="arxiv-label" href="https://arxiv.org/abs/2610.02067" target="_blank" rel="noopener">arXiv:2610.02067</a>
+      <h1>Learn the Directions,<br><span>Normalize the Gains.</span></h1>
+      <p class="subtitle">Post-Training Normalization for LoRA</p>
+      <div class="authors"><a href="mailto:zltian@alumni.pku.edu.cn">Zailong Tian<sup>1</sup></a><span>Yanzhe Chen<sup>2</sup></span><span>Zhuoheng Han<sup>3</sup></span><a href="mailto:wanghf@pku.edu.cn">Houfeng Wang<sup>3,†</sup></a><a href="mailto:lzliao@smu.edu.sg">Lizi Liao<sup>1,†</sup></a></div>
+      <p class="affiliations"><span><sup>1</sup> Singapore Management University</span><span><sup>2</sup> National University of Singapore</span><span><sup>3</sup> Peking University</span></p>
+      <p class="corresponding">† Corresponding authors</p>
+      <div class="paper-actions"><a class="button solid" href="https://arxiv.org/abs/2610.02067" target="_blank" rel="noopener">arXiv</a><a class="button" href="https://arxiv.org/pdf/2610.02067" target="_blank" rel="noopener">PDF</a><a class="button" href="#citation">BibTeX</a></div>
+    </section>
+    <section id="method" class="method wrap">
+      <div class="method-top"><div class="formula">ΔW = <span class="fixed">U</span> diag(<b id="gain-symbol">σ</b>) <span class="fixed">Vᵀ</span></div><span class="fixed-note">U, V fixed</span></div>
+      <div class="spectral-toolbar"><span id="stage-name">Trained LoRA</span><div class="stage-buttons" id="stage-buttons" role="group" aria-label="Select transformation step"></div><button id="replay-spectrum" class="plain-button">Replay</button></div>
+      <svg id="spectrum" viewBox="0 0 900 300" role="img" aria-labelledby="spectrum-title spectrum-desc"><title id="spectrum-title">LoRA-Norm gain transformation</title><desc id="spectrum-desc">A schematic rank-16 spectrum changes through L2 normalization, four fast Newton–Schulz steps, one stable step, and nuclear-mass restoration. Source directions remain fixed.</desc></svg>
+      <div class="spectrum-bottom"><div class="legend"><span><i class="ghost-key"></i>Original</span><span><i class="norm-key"></i>Current gains</span></div><div class="mass-readout">Σ gains <span id="mass-value">1.000</span><span id="mass-status"></span></div></div>
+      <p class="figure-note">Schematic spectrum · HNS 4+1 · log scale</p>
+      <p class="method-tagline">No calibration data. No retraining. No inference overhead.</p>
+      <details class="method-details"><summary>Method details</summary><div class="details-grid"><div class="equations"><p>x⁽⁰⁾ = σ / max(‖σ‖₂, 10⁻⁷)</p><p>f<sub>fast</sub>(x) = x(3.4445 − 4.7750x² + 2.0315x⁴)</p><p>f<sub>stable</sub>(x) = x(2 − 1.5x² + 0.5x⁴)</p><p>tᵢ = max(xᵢ<sup>out</sup>, 0) · Σⱼσⱼ / Σⱼmax(xⱼ<sup>out</sup>, 0)</p></div><p>Four fast steps, one stable step, then nuclear-norm restoration. The original directions, scaling, and rank budget stay fixed; Frobenius norm and functional energy can change.</p></div><a href="assets/method.png" target="_blank" rel="noopener"><img src="assets/method.png" width="1800" height="1182" loading="lazy" alt="Full method figure: low-rank decomposition, hybrid Newton–Schulz gain normalization, nuclear-norm restoration, and reconstruction."></a></details>
+    </section>
+    <section id="results" class="results wrap">
+      <div class="section-heading"><h2>Results</h2><span>18 adapters · 2 backbones · 3 tasks · 3 runs</span></div>
+      <div class="summary-grid" id="summary-grid">
+        <article class="summary-metric"><h3>Target</h3><div class="metric-values"><span>68.00%</span><span class="norm-text">72.08%</span></div><svg id="summary-target" viewBox="0 0 300 70" role="img" aria-label="Mean target-task performance: LoRA 68.00 percent; LoRA-Norm 72.08 percent."></svg><strong>+4.09 pp</strong></article>
+        <article class="summary-metric"><h3>Off-task</h3><div class="metric-values"><span>69.55%</span><span class="norm-text">72.79%</span></div><svg id="summary-off" viewBox="0 0 300 70" role="img" aria-label="Mean off-task performance: LoRA 69.55 percent; LoRA-Norm 72.79 percent."></svg><strong>+3.24 pp</strong></article>
+        <article class="summary-metric"><h3>Forgetting gap</h3><div class="metric-values"><span>2.71 pp</span><span class="norm-text">0.34 pp</span></div><svg id="summary-fg" viewBox="0 0 300 70" role="img" aria-label="Mean forgetting gap falls from 2.71 to 0.34 percentage points."></svg><strong>−2.36 pp</strong></article>
+      </div>
+      <div class="chart-controls"><div class="switch" role="group" aria-label="Backbone"><button class="selected" data-model="qwen" aria-pressed="true">Qwen3-8B</button><button data-model="llama" aria-pressed="false">Llama-3.1-8B-Instruct</button></div><div class="switch metric-switch" role="group" aria-label="Metric"><button class="selected" data-metric="target" aria-pressed="true">Target</button><button data-metric="off" aria-pressed="false">Off-task</button><button data-metric="fg" aria-pressed="false">Forgetting</button></div></div>
+      <svg id="task-chart" viewBox="0 0 920 310" role="img" aria-label="Qwen3-8B target-task results for Magicoder, MetaMath, and Tulu."></svg>
+      <div class="chart-caption"><span>Mean ± SD over three runs.</span><div class="legend"><span><i class="lora-key"></i>LoRA</span><span><i class="norm-key"></i>LoRA-Norm</span></div></div>
+      <details><summary>Full scores & baseline comparisons</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Full performance scores"><table><thead><tr><th scope="col">Task</th><th scope="col">Target · LoRA</th><th scope="col">Target · Norm</th><th scope="col">Off · LoRA</th><th scope="col">Off · Norm</th><th scope="col">FG · LoRA</th><th scope="col">FG · Norm</th></tr></thead><tbody id="results-table"></tbody><tfoot><tr><th scope="row">All 18</th><td>68.00</td><td>72.08</td><td>69.55</td><td>72.79</td><td>2.71</td><td>0.34</td></tr></tfoot></table></div><p class="detail-note">Target: HumanEval, GSM8K, or IFEval. Off: mean of three non-target categories, including Commonsense-8. FG: mean positive deficit relative to Base; lower is better.</p><p class="detail-note">Target improves on 16/18 checkpoints; Off on 15/18. Qwen–Tulu Off falls from 85.63% to 84.93%.</p><div class="table-scroll" tabindex="0" role="region" aria-label="Post-hoc baseline results"><table><thead><tr><th scope="col">Method</th><th scope="col">Target (%)</th><th scope="col">Off (%)</th><th scope="col">FG (pp)</th></tr></thead><tbody id="baseline-table"></tbody></table></div><p class="detail-note">PARA also compresses adapters. Spectral Surgery uses calibration data and edits o_proj/down_proj; LoRA-Norm edits all seven projection families.</p></details>
+    </section>
+    <section id="analysis" class="analysis wrap">
+      <div class="section-heading"><h2>What changes?</h2><button id="replay-diagnostics" class="plain-button">Replay</button></div>
+      <div class="diagnostic-grid" id="diagnostics"><article><h3>Functional participation ratio</h3><div class="diagnostic-values"><span>2.02</span><span class="norm-text">7.35</span></div><svg id="pr-chart" viewBox="0 0 430 150" role="img" aria-label="Mean module-median functional participation ratio increases from 2.02 to 7.35, out of rank 16."></svg></article><article><h3>Functional energy / LoRA</h3><div class="diagnostic-values"><span>1.0000</span><span class="norm-text">0.0972</span></div><svg id="energy-chart" viewBox="0 0 430 150" role="img" aria-label="Mean functional-energy ratio relative to LoRA decreases from 1 to 0.0972."></svg></article></div>
+      <p class="figure-note">18-checkpoint means under fixed frozen-base inputs. Motion connects measured endpoints.</p>
+      <p class="analysis-line">Energy-matched scaling recovers much of the gain. Stronger functional equalization does not consistently help.</p>
+      <details><summary>Matched-strength controls</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Matched-strength controls"><table><thead><tr><th scope="col">Method</th><th scope="col">Target (%)</th><th scope="col">Off (%)</th><th scope="col">FG (pp)</th></tr></thead><tbody id="control-table"></tbody></table></div><p class="detail-note">Scalar-E and Flat-E use activation statistics. Targets for matching come from LoRA-Norm. These controls do not establish a general spectral-shape advantage beyond energy matching.</p><a href="assets/matched-strength.svg" target="_blank" rel="noopener"><img src="assets/matched-strength.svg" loading="lazy" alt="Paired differences against matched-strength controls with 95 percent checkpoint-bootstrap intervals."></a></details>
+      <details><summary>Stronger functional equalization</summary><a href="assets/functional-equalization.svg" target="_blank" rel="noopener"><img src="assets/functional-equalization.svg" loading="lazy" alt="Stronger activation-aware equalization increases participation ratio without consistent additional gains in Target or Off."></a></details>
+    </section>
+    <section id="citation" class="citation wrap"><div class="section-heading"><h2>Citation</h2><button id="copy-citation" class="button">Copy BibTeX</button></div><details><summary>Show BibTeX</summary><pre><code id="bibtex">@misc{tian2026learndirectionsnormalizegains,
+  title={Learn the Directions, Normalize the Gains:
+         Post-Training Normalization for LoRA},
+  author={Zailong Tian and Yanzhe Chen and Zhuoheng Han
+          and Houfeng Wang and Lizi Liao},
+  year={2026},
+  eprint={2610.02067},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2610.02067}
+}</code></pre></details><p id="copy-status" aria-live="polite"></p></section>
+  </main>
+  <footer class="wrap"><a href="https://arxiv.org/abs/2610.02067" target="_blank" rel="noopener">arXiv · 1 October 2026</a><div><a href="assets/paper-source.zip" download>LaTeX source</a><a href="assets/lora-norm.pdf" target="_blank" rel="noopener">Local PDF</a><a href="mailto:zltian@alumni.pku.edu.cn">Contact</a></div></footer>
+  <noscript><p class="noscript-note">The paper PDF includes all figures and results. Enable JavaScript for the animations.</p></noscript>
+  <script src="results-data.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
