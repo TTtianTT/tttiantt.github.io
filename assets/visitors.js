@@ -20,7 +20,7 @@
   const format = new Intl.NumberFormat('en');
   const svgNS = 'http://www.w3.org/2000/svg';
   const api = 'https://zailong-tian.grassy-koi-4336.chatgpt.site/api/';
-  const productionHosts = new Set(['tttiantt.github.io']);
+  const productionHosts = new Set(['tttiantt.github.io', 'tianzailong.page']);
   const shouldTrack = window.location.protocol === 'https:' && productionHosts.has(window.location.hostname) && !window.location.pathname.startsWith('/preview/');
   const tracking = (async () => {
     if (!shouldTrack) return;
