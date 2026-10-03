@@ -28,7 +28,7 @@
 
 主页中 LoRA-Norm 论文条目的 **Project website** 按钮、方法图以及 News 中的项目页链接均指向 `lora-norm/`。原始 `lora-norm-github` 目录保留，之后修改论文网站时请同步到本目录的 `lora-norm/`。
 
-主页照片拍摄于 2023.07.19，地点为青岛西海岸新区；英文说明分行展示日期、`West Coast New Area, Qingdao` 和 `A beautiful place, full of memories.`。论文列表默认展示前三篇，其余四篇可展开、收起；搜索、年份和研究方向筛选会显示所有匹配论文。
+主页照片拍摄于 2023.07.19，地点为青岛西海岸新区；英文说明分行展示日期、`West Coast New Area, Qingdao` 和 `A beautiful place, full of memories.`。主页使用清晰增强版 `assets/portrait-super-resolution.png`（1222 × 1287）；原图 `assets/portrait.png`（636 × 670）保留，AI 细节重建使用的提示词在 `backups/portrait-super-resolution-20261003.prompt.txt`。论文列表默认展示前三篇，其余四篇可展开、收起；搜索、年份和研究方向筛选会显示所有匹配论文。
 
 切换前的完整网站及设计稿已备份到 `backups/site-before-redesign-promotion-20261003.zip`。`preview/` 的旧页面地址会跳转到正式主页；今后请直接修改根目录中的正式文件。
 
