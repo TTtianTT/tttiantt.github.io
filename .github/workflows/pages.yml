@@ -30,7 +30,6 @@ jobs:
           mkdir _site
           cp index.html .nojekyll _site/
           cp -R assets lora-norm _site/
-          if [ -f CNAME ]; then cp CNAME _site/; fi
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:

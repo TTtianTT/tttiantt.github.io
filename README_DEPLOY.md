@@ -66,7 +66,7 @@ macOS 按 **Command + Shift + .** 显示隐藏文件，上传时注意包含 `.g
 
 前端每次加载正式页面向 `https://zailong-tian.grassy-koi-4336.chatgpt.site/api/visit` 发出一次 POST；地图从 `/api/visitor-stats` 读取累计统计。`Page views` 每次页面加载增加；地点的 `Visits` 通过浏览器本地时间标记限制为每 24 小时一次，并非严格的独立访客人数。优先使用 Cloudflare 城市信息；当前 Sites 环境不提供此信息，因此每个浏览器每天首次正式访问时查询 IPWHOIS 城市位置，并由后台核对国家信息。后台也有服务端查询补充；查询失败或达到免费服务的每日限额时降级为近似国家位置。无需浏览器定位许可，也不向数据库保存 IP 或访客标识。服务说明：`https://ipwhois.io/documentation`。
 
-正式 HTTPS 域名 `tttiantt.github.io` 和 `tianzailong.page` 会记录访问，本地预览、文件预览、后台站点预览及 `/preview/` 路径不计数。自定义域名 `tianzailong.page` 已保存在 `CNAME` 中，需先完成域名 DNS 配置并等待 HTTPS 证书生效。以后更换部署域名时请同步修改前端 `productionHosts` 和后台 `productionOrigins`。GitHub Pages 不运行后台，因此需保留此服务。正式统计使用 D1 的 `homepage_totals` 和 `homepage_places`，通过 `VISITOR_DB` 绑定读取；开发验证的旧 `visitor_*` 表不参与主页统计。
+正式主页使用 GitHub 免费地址 `https://tttiantt.github.io/`，已取消自定义域名并移除 `CNAME`。仅此正式 HTTPS 域名会记录访问，本地预览、文件预览、后台站点预览及 `/preview/` 路径不计数。以后更换部署域名时请同步修改前端 `productionHosts` 和后台 `productionOrigins`。GitHub Pages 不运行后台，因此需保留此服务。正式统计使用 D1 的 `homepage_totals` 和 `homepage_places`，通过 `VISITOR_DB` 绑定读取；开发验证的旧 `visitor_*` 表不参与主页统计。
 
 统计后台源码及数据库迁移备份到 `backups/visitor-map-own-backend-20261003.zip`，无需上传到 GitHub Pages。原 SmallCounter 的第三方历史记录保留，但不再读取或记录。
 
